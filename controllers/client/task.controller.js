@@ -27,6 +27,12 @@ module.exports.index = async (req, res) => {
     }
     skip = (page -1) * limitItem
     // hết phân trang
+    // tìm kiếm
+    if(req.query.keyword){
+        const regex = new RegExp(req.query.keyword, "i")
+        find.title = regex
+    }
+    // hết tìm kiếm
 
     const tasks = await Task
     .find(find)
