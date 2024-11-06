@@ -15,7 +15,25 @@ module.exports.index = async (req, res) => {
         sort[req.query.sortKey] = req.query.sortValue
     }
     // hết sắp xếp theo tiêu chí
-    const tasks = await Task.find(find).sort(sort);
+    //Phân trang
+    let limitItem = 4;
+    let page = 1;
+
+    if(req.query.page){
+        page = parseInt(req.query.page)
+    }
+    if(req.query.limit){
+        limitItem = parseInt(req.query.limit)
+    }
+    skip = (page -1) * limitItem
+    // hết phân trang
+
+    const tasks = await Task
+    .find(find)
+    .skip(skip)
+    .limit(limitItem)
+    .sort(sort);
+
     res.json(tasks)
 }
 
