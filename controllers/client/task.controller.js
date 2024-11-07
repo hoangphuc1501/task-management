@@ -2,6 +2,10 @@ const Task = require("../../models/task.model");
 
 module.exports.index = async (req, res) => {
     const find = {
+        $or: [
+            { createdBy: req.user.id},
+            {listUser: req.user.id}
+        ],
         deleted: false
     }
     // bộ lọc trạng thái
@@ -40,16 +44,36 @@ module.exports.index = async (req, res) => {
     .limit(limitItem)
     .sort(sort);
 
-    res.json(tasks)
+    res.json({
+        code: "success",
+        message: "Thành công!",
+        data: tasks
+    })
 }
 
 module.exports.detail = async (req, res) => {
     const id = req.params.id;
     const task = await Task.findOne({
         _id: id,
+        $or: [
+            { createdBy: req.user.id},
+            {listUser: req.user.id}
+        ],
         deleted: false
     });
-    res.json(task)
+    if(!task){
+        res.json({
+            code: "success",
+            message: "Id không hợp lệ!",
+            data: task
+        })
+        return;
+    }
+    res.json({
+        code: "success",
+        message: "Thành công!",
+        data: task
+    })
 }
 
 module.exports.changeMultiPatch = async (req, res) => {
