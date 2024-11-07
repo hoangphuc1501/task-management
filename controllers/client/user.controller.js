@@ -142,3 +142,31 @@ module.exports.otpPassword = async (req, res) => {
         token: user.token
     })
 }
+
+module.exports.resetPassword = async (req, res) => {
+    const password = req.body.password;
+    const token = req.body.token;
+
+    const existRecord = await User.findOne({
+        token: token
+    })
+    if(!existRecord){
+        res.json({
+            code: "error",
+            message: "Token không hợp lệ!",
+        })
+        return;
+    }
+
+    await User.findOne({
+        token: token,
+        status: "active",
+        deleted: false
+    },{
+        password: md5(password)
+    })
+    res.json({
+        code: "success",
+        message: "Đổi mật khẩu thành công!",
+    })
+}
