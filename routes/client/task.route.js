@@ -8,4 +8,5 @@ router.get("/", controller.index)
 router.get("/detail/:id", controller.detail)
 router.patch("/change-multi", controller.changeMultiPatch)
 router.post("/create", controller.createPost)
+router.patch("/edit/:id", controller.editPatch)
 module.exports = router;

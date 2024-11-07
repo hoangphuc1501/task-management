@@ -69,8 +69,6 @@ module.exports.changeMultiPatch = async (req, res) => {
 
 module.exports.createPost = async (req, res) => {
     const data = req.body;
-    console.log(data)
-
     const task = new Task(data)
     await task.save();
 
@@ -78,5 +76,17 @@ module.exports.createPost = async (req, res) => {
         code: "success",
         message: "Tạo công việc thành công!",
         data: task
+    })
+}
+module.exports.editPatch = async (req, res) => {
+    const id = req.params.id;
+    const data = req.body;
+    await Task.updateOne({
+        _id: id
+    }, data)
+
+    res.json({
+        code: "success",
+        message: "Cập nhật công việc thành công!"
     })
 }
