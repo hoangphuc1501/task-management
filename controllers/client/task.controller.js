@@ -94,8 +94,6 @@ module.exports.changeMultiPatch = async (req, res) => {
 module.exports.createPost = async (req, res) => {
     const data = req.body;
     data.createdBy = req.user.id;
-    const taskParentId = req.body.taskParentId
-    if(taskParentId)
 
     const task = new Task(data)
     await task.save();
